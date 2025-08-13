@@ -1,6 +1,5 @@
 
 locals {
-  # Chuyển đổi tên để đảm bảo chỉ có chữ cái, số và dấu gạch ngang
   # Convert to ensure that there are only letters, numbers and underscore
   formatted_name = replace(lower("${var.project_name}-${var.env}"), "_", "-")
   
