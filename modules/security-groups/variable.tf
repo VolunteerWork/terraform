@@ -30,13 +30,6 @@ variable "allow_ssh_from_ips" {
   default     = ["0.0.0.0/0"]
 }
 
-# Có thể xóa biến này vì không cần nữa
-# variable "enable_db_access" {
-#   description = "Có cho phép truy cập database từ bên ngoài không"
-#   type        = bool
-#   default     = false
-# }
-
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
