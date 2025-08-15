@@ -21,7 +21,7 @@ variable "lb_sg_id" {
 
 variable "public_subnet_ids" {
   description = "List of public subnet IDs"
-  value       = [for subnet in aws_subnet.public_subnets : subnet.id]
+  type = list(string)
 }
 
 variable "frontend_healthcheck" {
