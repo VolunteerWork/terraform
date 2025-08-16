@@ -23,5 +23,5 @@ output "documentdb_instance_endpoints" {
 
 output "documentdb_username" {
   description = "DocumentDB master username"
-  value       = var.create_documentdb ? var.docdb_username : null
+  value       = var.docdb_username
 }

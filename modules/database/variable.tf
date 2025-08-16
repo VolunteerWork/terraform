@@ -19,12 +19,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "create_documentdb" {
-  description = "Whether to create DocumentDB cluster"
-  type        = bool
-  default     = false
-}
-
 variable "docdb_sg_id" {
   description = "Security group ID for DocumentDB"
   type        = string

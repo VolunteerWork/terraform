@@ -15,7 +15,6 @@ locals {
 # DB Subnet Groups
 ##########################################
 resource "aws_docdb_subnet_group" "docdb_subnet_group" {
-  count       = var.create_documentdb ? 1 : 0
   name        = local.docdb_subnet_group_name
   description = "Database subnet group for DocumentDB"
   subnet_ids  = var.private_data_subnet_ids
@@ -33,7 +32,6 @@ resource "aws_docdb_subnet_group" "docdb_subnet_group" {
 }
 
 resource "aws_docdb_cluster" "docdb" {
-  count                         = var.create_documentdb ? 1 : 0
   cluster_identifier            = local.docdb_cluster_identifier
   engine                        = "docdb"
   master_username               = var.docdb_username
@@ -57,7 +55,7 @@ resource "aws_docdb_cluster" "docdb" {
 }
 
 resource "aws_docdb_cluster_instance" "docdb_instances" {
-  count              = var.create_documentdb ? var.docdb_instance_count : 0
+  count              = var.docdb_instance_count
   identifier         = "${local.docdb_cluster_identifier}-${count.index}"
   cluster_identifier = aws_docdb_cluster.docdb[0].id
   instance_class     = var.docdb_instance_class

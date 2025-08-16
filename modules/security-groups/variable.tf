@@ -1,33 +1,22 @@
 variable "vpc_id" {
-  description = "ID của VPC"
-  type        = string
-}
-
-variable "vpc_cidr" {
-  description = "CIDR block của VPC"
+  description = "VPC ID"
   type        = string
 }
 
 variable "env" {
-  description = "Môi trường triển khai"
+  description = "Deployment Environment"
   type        = string
 }
 
 variable "project_name" {
-  description = "Tên của project"
+  description = "Project Name"
   type        = string
 }
 
-variable "region" {
-  description = "AWS Region to deploy resources"
-  type        = string
-  default     = "ap-southeast-1"
-}
-
-variable "allow_ssh_from_ips" {
-  description = "List các IP được phép SSH vào instances"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+variable "db_public_access" {
+  description = "Allow public access to db for testing purposes"
+  type        = bool
+  default = false
 }
 
 variable "tags" {
