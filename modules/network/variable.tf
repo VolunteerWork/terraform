@@ -39,7 +39,7 @@ variable "private_data_subnet_cidrs" {
 # AWS Region
 variable "region" {
   type    = string
-  default = "ap-southeast-1"
+  default = "us-east-1"
 }
 
 # Availability Zones

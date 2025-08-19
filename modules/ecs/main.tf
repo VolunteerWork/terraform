@@ -24,6 +24,10 @@ resource "aws_ecs_cluster" "main" {
 resource "aws_ecs_task_definition" "backend_task_definition" {
   family                = "${var.project_name}-${var.env}-backend-family"
   requires_compatibilities = ["FARGATE"]
+  network_mode = "awsvpc"
+  execution_role_arn = var.ecs_task_execution_role_arn
+  cpu = "${var.backend_container_config.cpu}"
+  memory = "${var.backend_container_config.memory}"
   container_definitions = jsonencode([
     {
       name = "backend"
@@ -33,9 +37,9 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
       image = var.backend_container_config.image
       portMappings = [{
         containerPort = var.backend_container_config.containerPort
-        hostPort = 80
-      }],
-      environment: [
+        hostPort = var.backend_container_config.containerPort
+      }]
+      environment = [
         { name = "DB_HOST", value = var.documentdb_endpoint },
         { name = "DB_PORT", value = tostring(var.documentdb_port) },
         { name = "DB_NAME", value = "volunteerworkdb" }
@@ -43,14 +47,17 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
       secrets = [
         { name = "DB_USER", valueFrom = var.db_username_arn },
         { name = "DB_PASS", valueFrom = var.db_password_arn },
-        { name = "JWT_SECRET_KEY", valueFrom = var.jwt_secret_key_arn },
-        { name = "CLOUDINARY_URL", valueFrom = var.cloudinary_url_arn },
-        { name = "CLOUDINARY_API_KEY", valueFrom = var.cloudinary_api_key_arn },
-        { name = "CLOUDINARY_API_SECRET", valueFrom = var.cloudinary_api_secret_arn },
-        { name = "CLOUDINARY_NAME", valueFrom = var.cloudinary_name_arn },
-        { name = "EMAIL_USER", valueFrom = var.email_user_arn },
-        { name = "EMAIL_PASS", valueFrom = var.email_pass_arn }
+        { name = "JWT_SECRET_KEY", valueFrom = var.jwt_secret_key_arn }
       ]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          awslogs-group = "/ecs/${var.project_name}-${var.env}-backend-family",
+          awslogs-create-group = "true",
+          awslogs-region = var.region,
+          awslogs-stream-prefix = "ecs"
+        }
+      }
     }
   ])
 
@@ -70,6 +77,10 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
 resource "aws_ecs_task_definition" "frontend_task_definition" {
   family                = "${var.project_name}-${var.env}-frontend-family"
   requires_compatibilities = ["FARGATE"]
+  network_mode = "awsvpc"
+  execution_role_arn = var.ecs_task_execution_role_arn
+  cpu = "${var.backend_container_config.cpu}"
+  memory = "${var.backend_container_config.memory}"
   container_definitions = jsonencode([
     {
       name = "frontend"
@@ -79,11 +90,21 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
       image = var.frontend_container_config.image
       portMappings = [{
         containerPort = var.frontend_container_config.containerPort
-        hostPort = 80
+        hostPort = var.frontend_container_config.containerPort
       }],
       environment: [
-        { name = "NEXT_PUBLIC_API_BASE_URL", value = "/api" }
+        { name = "NEXT_PUBLIC_API_BASE_URL", value = "/api" },
+        { name = "HOSTNAME", value = "0.0.0.0" }
       ]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          awslogs-group = "/ecs/${var.project_name}-${var.env}-frontend-family",
+          awslogs-create-group = "true",
+          awslogs-region = var.region,
+          awslogs-stream-prefix = "ecs"
+        }
+      }
     }
   ])
 
@@ -109,7 +130,6 @@ resource "aws_ecs_service" "backend_service" {
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.backend_task_definition.arn
   desired_count   = var.backend_desired_count
-  iam_role        = var.backend_service_iam_arn
 
   load_balancer {
     target_group_arn = var.backend_target_group_arn
@@ -124,7 +144,7 @@ resource "aws_ecs_service" "backend_service" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [desired_count, task_definition]
   }
 
   tags = merge(
@@ -142,7 +162,6 @@ resource "aws_ecs_service" "frontend_service" {
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.frontend_task_definition.arn
   desired_count   = var.frontend_desired_count
-  iam_role        = var.frontend_service_iam_arn
 
   load_balancer {
     target_group_arn = var.frontend_target_group_arn
@@ -157,7 +176,7 @@ resource "aws_ecs_service" "frontend_service" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [desired_count, task_definition]
   }
 
   tags = merge(

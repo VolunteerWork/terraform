@@ -8,8 +8,6 @@ resource "aws_lb" "main" {
   security_groups    = [var.lb_sg_id]
   subnets            = var.public_subnet_ids
 
-  enable_deletion_protection = true
-
   tags = merge(
     {
       Name        = "${var.project_name}-${var.env}-load-balancer"
