@@ -24,6 +24,18 @@ variable "public_subnet_ids" {
   type = list(string)
 }
 
+variable "backend_port" {
+  description = "Port of backend app"
+  type = number
+  default = 8080
+}
+
+variable "frontend_port" {
+  description = "Port of frontend app"
+  type = number
+  default = 3000
+}
+
 variable "frontend_healthcheck" {
   type = object({
     path                = string

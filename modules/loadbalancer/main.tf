@@ -24,9 +24,10 @@ resource "aws_lb" "main" {
 ######################################
 resource "aws_lb_target_group" "backend_tg" {
   name     = "${var.project_name}-${var.env}-backend-tg"
-  port     = 80
+  port     = var.backend_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip"
 
   health_check {
     path                = var.backend_healthcheck.path
@@ -48,9 +49,10 @@ resource "aws_lb_target_group" "backend_tg" {
 
 resource "aws_lb_target_group" "frontend_tg" {
   name     = "${var.project_name}-${var.env}-frontend-tg"
-  port     = 80
+  port     = var.frontend_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip"
 
   health_check {
     path                = var.frontend_healthcheck.path

@@ -120,7 +120,7 @@ variable "backend_container_config" {
     })
     default = {
       name = "backend"
-      cpu = 10
+      cpu = 50
       memory = 512
       image = "hungtran679/volunteerwork-backend:latest"
       containerPort = 8080
@@ -137,7 +137,7 @@ variable "frontend_container_config" {
     })
     default = {
       name = "frontend"
-      cpu = 10
+      cpu = 50
       memory = 512
       image = "hungtran679/volunteerwork-frontend:latest"
       containerPort = 3000
