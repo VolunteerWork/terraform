@@ -22,20 +22,18 @@ variable "tags" {
 variable "docdb_sg_id" {
   description = "Security group ID for DocumentDB"
   type        = string
-  default     = ""
 }
 
 variable "docdb_username" {
   description = "Username for DocumentDB"
   type        = string
-  default     = "dbadmin"
+  sensitive   = true
 }
 
 variable "docdb_password" {
   description = "Password for DocumentDB"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "docdb_instance_class" {

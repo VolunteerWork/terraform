@@ -25,6 +25,61 @@ variable "private_app_subnet_ids" {
   type = list(string)
 }
 
+variable "documentdb_endpoint" {
+  description = "DocumentDB cluster endpoint"
+  type = string
+}
+
+variable "documentdb_port" {
+  description = "DocumentDB port"
+  type = number
+}
+
+variable "db_username_arn" {
+  description = "The ARN of the SSM Parameter DB username"
+  type = string
+}
+
+variable"db_password_arn" {
+  description = "The ARN of the SSM Parameter DB password"
+  type = string
+}
+
+variable "jwt_secret_key_arn" {
+  description = "The ARN of the SSM Parameter Cloudinary URL"
+  type = string
+}
+
+variable "cloudinary_url_arn" {
+  description = "The ARN of the SSM Parameter Cloudinary URL"
+  type = string
+}
+
+variable "cloudinary_api_key_arn" {
+  description = "The ARN of the SSM Parameter Cloudinary API Key"
+  type = string
+}
+
+variable "cloudinary_api_secret_arn" {
+  description = "The ARN of the SSM Parameter Cloudinary API Secret"
+  type = string
+}
+
+variable "cloudinary_name_arn" {
+  description = "The ARN of the SSM Parameter Cloudinary Name"
+  type = string
+}
+
+variable "email_user_arn" {
+  description = "The ARN of the SSM Parameter Email User"
+  type = string
+}
+
+variable "email_pass_arn" {
+  description = "The ARN of the SSM Parameter Email Pass"
+  type = string
+}
+
 variable "backend_service_sg_id" {
   description = "Id of security group of backend service"
   type = string
@@ -55,53 +110,37 @@ variable "frontend_target_group_arn" {
   type       = string
 }
 
-variable "backend_container_definitions" {
+variable "backend_container_config" {
     type = object({
-        name         = string
+        name = string
         image        = string
         cpu          = number
         memory       = number
-        essential    = bool
-        portMappings = list(object({
-            containerPort = number
-            hostPort      = number
-        }))
+        containerPort = number
     })
     default = {
       name = "backend"
       cpu = 10
       memory = 512
-      essential = true
       image = "hungtran679/volunteerwork-backend:latest"
-      portMappings = [{
-        containerPort = 8080
-        hostPort = 80
-      }]
+      containerPort = 8080
     }
 }
 
-variable "frontend_container_definitions" {
+variable "frontend_container_config" {
     type = object({
-        name         = string
+        name = string
         image        = string
         cpu          = number
         memory       = number
-        essential    = bool
-        portMappings = list(object({
-            containerPort = number
-            hostPort      = number
-        }))
+        containerPort = number
     })
     default = {
       name = "frontend"
       cpu = 10
       memory = 512
-      essential = true
       image = "hungtran679/volunteerwork-frontend:latest"
-      portMappings = [{
-        containerPort = 3000
-        hostPort = 80
-      }]
+      containerPort = 3000
     }
 }
 

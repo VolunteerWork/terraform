@@ -40,7 +40,7 @@ resource "aws_docdb_cluster" "docdb" {
   preferred_backup_window       = "02:00-03:00"
   preferred_maintenance_window  = "mon:03:00-mon:04:00"
   skip_final_snapshot           = true
-  db_subnet_group_name          = aws_docdb_subnet_group.docdb_subnet_group[0].name
+  db_subnet_group_name          = aws_docdb_subnet_group.docdb_subnet_group.name
   vpc_security_group_ids        = [var.docdb_sg_id]
   storage_encrypted             = true
   deletion_protection           = var.docdb_deletion_protection
@@ -57,7 +57,7 @@ resource "aws_docdb_cluster" "docdb" {
 resource "aws_docdb_cluster_instance" "docdb_instances" {
   count              = var.docdb_instance_count
   identifier         = "${local.docdb_cluster_identifier}-${count.index}"
-  cluster_identifier = aws_docdb_cluster.docdb[0].id
+  cluster_identifier = aws_docdb_cluster.docdb.id
   instance_class     = var.docdb_instance_class
   
   tags = merge(

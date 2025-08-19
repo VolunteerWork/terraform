@@ -110,7 +110,7 @@ resource "aws_security_group" "docdb_sg" {
     to_port         = 27017
     protocol        = "tcp"
     security_groups = [aws_security_group.backend_ecs_service_sg.id]
-    description     = "Allow DocumentDB access from EKS nodes"
+    description     = "Allow DocumentDB access from ECS instances"
   }
 
   egress {

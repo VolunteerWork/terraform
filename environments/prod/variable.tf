@@ -48,6 +48,56 @@ variable "private_data_subnet_cidrs" {
   default     = ["10.0.5.0/24", "10.0.6.0/24"]
 }
 
+variable "docdb_username" {
+  description = "Username for DocumentDB"
+  type        = string
+  sensitive   = true
+}
+
+variable "docdb_password" {
+  description = "Password for DocumentDB"
+  type        = string
+  sensitive   = true
+}
+
+variable "jwt_secret_key" {
+  description = "Secret key for generating JWT tokens"
+  type        = string
+  sensitive   = true
+}
+
+variable "cloudinary_url" {
+  description = "Cloudinary URL"
+  type        = string
+}
+
+variable "cloudinary_api_key" {
+  description = "Cloudinary API Key"
+  type        = string
+  sensitive   = true
+}
+
+variable "cloudinary_api_secret" {
+  description = "Cloudinary API Secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "cloudinary_name" {
+  description = "Cloudinary Name"
+  type        = string
+}
+
+variable "email_user" {
+  description = "Email User"
+  type        = string
+}
+
+variable "email_pass" {
+  description = "Email Password"
+  type        = string
+}
+
 # Tags
 variable "tags" {
   description = "A map of tags to add to all resources"
