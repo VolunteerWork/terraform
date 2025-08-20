@@ -1,5 +1,5 @@
 variable "env" {
-  type = string
+  type    = string
   default = "dev"
 }
 
@@ -10,7 +10,7 @@ variable "project_name" {
 
 variable "kms_myapp_secrets_arn" {
   description = "The ARN of the KMS key"
-  type = string
+  type        = string
 }
 
 # Tags

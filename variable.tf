@@ -18,7 +18,7 @@ variable "env" {
 
 # Availability Zones
 variable "availability_zones" {
-  type    = list(string)
+  type = list(string)
 }
 
 # VPC CIDR

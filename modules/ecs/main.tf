@@ -22,22 +22,22 @@ resource "aws_ecs_cluster" "main" {
 # ECS Task Definitions
 ######################################
 resource "aws_ecs_task_definition" "backend_task_definition" {
-  family                = "${var.project_name}-${var.env}-backend-family"
+  family                   = "${var.project_name}-${var.env}-backend-family"
   requires_compatibilities = ["FARGATE"]
-  network_mode = "awsvpc"
-  execution_role_arn = var.ecs_task_execution_role_arn
-  cpu = "${var.backend_container_config.cpu}"
-  memory = "${var.backend_container_config.memory}"
+  network_mode             = "awsvpc"
+  execution_role_arn       = var.ecs_task_execution_role_arn
+  cpu                      = var.backend_container_config.cpu
+  memory                   = var.backend_container_config.memory
   container_definitions = jsonencode([
     {
-      name = "backend"
-      cpu = var.backend_container_config.cpu
-      memory = var.backend_container_config.memory
+      name      = "backend"
+      cpu       = var.backend_container_config.cpu
+      memory    = var.backend_container_config.memory
       essential = true
-      image = var.backend_container_config.image
+      image     = var.backend_container_config.image
       portMappings = [{
         containerPort = var.backend_container_config.containerPort
-        hostPort = var.backend_container_config.containerPort
+        hostPort      = var.backend_container_config.containerPort
       }]
       environment = [
         { name = "DB_HOST", value = var.documentdb_endpoint },
@@ -52,9 +52,9 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group = "/ecs/${var.project_name}-${var.env}-backend-family",
-          awslogs-create-group = "true",
-          awslogs-region = var.region,
+          awslogs-group         = "/ecs/${var.project_name}-${var.env}-backend-family",
+          awslogs-create-group  = "true",
+          awslogs-region        = var.region,
           awslogs-stream-prefix = "ecs"
         }
       }
@@ -75,33 +75,33 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
 }
 
 resource "aws_ecs_task_definition" "frontend_task_definition" {
-  family                = "${var.project_name}-${var.env}-frontend-family"
+  family                   = "${var.project_name}-${var.env}-frontend-family"
   requires_compatibilities = ["FARGATE"]
-  network_mode = "awsvpc"
-  execution_role_arn = var.ecs_task_execution_role_arn
-  cpu = "${var.backend_container_config.cpu}"
-  memory = "${var.backend_container_config.memory}"
+  network_mode             = "awsvpc"
+  execution_role_arn       = var.ecs_task_execution_role_arn
+  cpu                      = var.backend_container_config.cpu
+  memory                   = var.backend_container_config.memory
   container_definitions = jsonencode([
     {
-      name = "frontend"
-      cpu = var.frontend_container_config.cpu
-      memory = var.frontend_container_config.memory
+      name      = "frontend"
+      cpu       = var.frontend_container_config.cpu
+      memory    = var.frontend_container_config.memory
       essential = true
-      image = var.frontend_container_config.image
+      image     = var.frontend_container_config.image
       portMappings = [{
         containerPort = var.frontend_container_config.containerPort
-        hostPort = var.frontend_container_config.containerPort
+        hostPort      = var.frontend_container_config.containerPort
       }],
-      environment: [
+      environment : [
         { name = "NEXT_PUBLIC_API_BASE_URL", value = "/api" },
         { name = "HOSTNAME", value = "0.0.0.0" }
       ]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group = "/ecs/${var.project_name}-${var.env}-frontend-family",
-          awslogs-create-group = "true",
-          awslogs-region = var.region,
+          awslogs-group         = "/ecs/${var.project_name}-${var.env}-frontend-family",
+          awslogs-create-group  = "true",
+          awslogs-region        = var.region,
           awslogs-stream-prefix = "ecs"
         }
       }
@@ -133,7 +133,7 @@ resource "aws_ecs_service" "backend_service" {
 
   load_balancer {
     target_group_arn = var.backend_target_group_arn
-    container_name   =  var.backend_container_config.name
+    container_name   = var.backend_container_config.name
     container_port   = var.backend_container_config.containerPort
   }
 
