@@ -49,17 +49,8 @@ module "security-groups" {
 }
 
 ##########################################
-# IAM Module
+# SSM Parameters Module
 ##########################################
-module "iam" {
-  source = "../../modules/iam"
-  
-  project_name = var.project_name
-  env   = var.env
-  
-  tags            = var.tags
-}
-
 module "ssm-parameters"{
   source = "../../modules/ssm-parameters"
 
@@ -75,6 +66,20 @@ module "ssm-parameters"{
   cloudinary_name = var.cloudinary_name
   email_user = var.email_user
   email_pass = var.email_pass
+}
+
+##########################################
+# IAM Module
+##########################################
+module "iam" {
+  source = "../../modules/iam"
+  
+  project_name = var.project_name
+  env   = var.env
+
+  kms_myapp_secrets_arn = module.ssm-parameters.kms_myapp_secrets_arn
+  
+  tags            = var.tags
 }
 
 module "database"{
@@ -105,18 +110,21 @@ module "loadbalancer" {
   tags            = var.tags
 }
 
+##########################################
+# ECS Module
+##########################################
 module "ecs"{
   source = "../../modules/ecs"
 
   project_name = var.project_name
   env   = var.env
+  region = var.region
 
-  private_app_subnet_ids = var.private_app_subnet_cidrs
+  private_app_subnet_ids = module.network.private_app_subnet_ids
   
   backend_service_sg_id = module.security-groups.backend_ecs_service_sg_id
   frontend_service_sg_id = module.security-groups.frontend_ecs_service_sg_id
-  frontend_service_iam_arn = module.iam.ecs_task_execution_role_arn
-  backend_service_iam_arn = module.iam.ecs_task_execution_role_arn
+  ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   frontend_target_group_arn = module.loadbalancer.frontend_target_group_arn
   backend_target_group_arn = module.loadbalancer.backend_target_group_arn
   
@@ -130,8 +138,9 @@ module "ecs"{
   email_user_arn = module.ssm-parameters.email_user_arn
   email_pass_arn = module.ssm-parameters.email_user_arn
 
-  documentdb_endpoint = module.database.documentdb_endpoint
-  documentdb_port = module.database.documentdb_port
+  documentdb_endpoint = ""
+  # documentdb_port = module.database.documentdb_port
 
   tags   = var.tags
 }
+

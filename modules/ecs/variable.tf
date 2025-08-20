@@ -8,16 +8,21 @@ variable "project_name" {
   type = string
 }
 
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
 # Desired count of backend app
 variable "backend_desired_count" {
   type = number
-  default = 2
+  default = 1
 }
 
 # Desired count of frontend app
 variable "frontend_desired_count" {
   type = number
-  default = 2
+  default = 1
 }
 
 variable "private_app_subnet_ids" {
@@ -33,6 +38,7 @@ variable "documentdb_endpoint" {
 variable "documentdb_port" {
   description = "DocumentDB port"
   type = number
+  default = 27017
 }
 
 variable "db_username_arn" {
@@ -90,13 +96,8 @@ variable "frontend_service_sg_id" {
   type = string
 }
 
-variable "frontend_service_iam_arn" {
-  description = "Arn string of backend service IAM role"
-  type = string
-}
-
-variable "backend_service_iam_arn" {
-  description = "Arn string of backend service IAM role"
+variable "ecs_task_execution_role_arn" {
+  description = "Arn string of ECS Task Execution role"
   type = string
 }
 
@@ -120,8 +121,8 @@ variable "backend_container_config" {
     })
     default = {
       name = "backend"
-      cpu = 50
-      memory = 512
+      cpu = 512
+      memory = 1024
       image = "hungtran679/volunteerwork-backend:latest"
       containerPort = 8080
     }
@@ -137,8 +138,8 @@ variable "frontend_container_config" {
     })
     default = {
       name = "frontend"
-      cpu = 50
-      memory = 512
+      cpu = 512
+      memory = 1024
       image = "hungtran679/volunteerwork-frontend:latest"
       containerPort = 3000
     }
