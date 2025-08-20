@@ -35,8 +35,8 @@ jobs:
         with:
           name: terraform-artifacts
           path: |
-            tfplan
-            .terraform.lock.hcl
+            ./tfplan
+            ./terraform.lock.hcl
 
 
   deploy:
