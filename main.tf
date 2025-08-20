@@ -22,7 +22,7 @@ provider "aws" {
 # Network
 ##########################################
 module "network" {
-  source = "../../modules/network"
+  source = "./modules/network"
 
   project_name              = var.project_name
   env                       = var.env
@@ -38,7 +38,7 @@ module "network" {
 # Security Groups Module
 ##########################################
 module "security-groups" {
-  source = "../../modules/security-groups"
+  source = "./modules/security-groups"
 
   project_name = var.project_name
   env          = var.env
@@ -52,7 +52,7 @@ module "security-groups" {
 # SSM Parameters Module
 ##########################################
 module "ssm-parameters" {
-  source = "../../modules/ssm-parameters"
+  source = "./modules/ssm-parameters"
 
   project_name = var.project_name
   env          = var.env
@@ -72,7 +72,7 @@ module "ssm-parameters" {
 # IAM Module
 ##########################################
 module "iam" {
-  source = "../../modules/iam"
+  source = "./modules/iam"
 
   project_name = var.project_name
   env          = var.env
@@ -83,7 +83,7 @@ module "iam" {
 }
 
 module "database" {
-  source = "../../modules/database"
+  source = "./modules/database"
 
   project_name = var.project_name
   env          = var.env
@@ -99,7 +99,7 @@ module "database" {
 # Load Balancer Module
 ##########################################
 module "loadbalancer" {
-  source = "../../modules/loadbalancer"
+  source = "./modules/loadbalancer"
 
   project_name = var.project_name
   env          = var.env
@@ -114,7 +114,7 @@ module "loadbalancer" {
 # ECS Module
 ##########################################
 module "ecs" {
-  source = "../../modules/ecs"
+  source = "./modules/ecs"
 
   project_name = var.project_name
   env          = var.env
