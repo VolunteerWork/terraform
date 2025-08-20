@@ -1,5 +1,10 @@
 name: Terraform CI
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: "us-east-1"
+
 on:
   pull_request:
     branches:
@@ -32,7 +37,7 @@ jobs:
         run: checkov -d . --quiet --output cli,json > checkov_report.json
 
       - name: Upload Checkov report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: checkov-report
           path: checkov_report.json
