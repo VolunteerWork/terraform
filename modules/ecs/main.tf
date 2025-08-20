@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
         hostPort      = var.backend_container_config.containerPort
       }]
       environment = [
-        { name = "DB_IS_DOCUMENTDB", value = "true"}
+        { name = "DB_IS_DOCUMENTDB", value = "true" }
       ]
       secrets = [
         { name = "DB_URL", valueFrom = var.db_url_arn },

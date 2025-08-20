@@ -28,14 +28,14 @@ variable "docdb_username" {
   description = "Username for DocumentDB"
   type        = string
   sensitive   = true
-  default = "dbadmin"
+  default     = "dbadmin"
 }
 
 variable "docdb_password" {
   description = "Password for DocumentDB"
   type        = string
   sensitive   = true
-  default = "Kobiet.123"
+  default     = "Kobiet.123"
 }
 
 variable "docdb_instance_class" {
