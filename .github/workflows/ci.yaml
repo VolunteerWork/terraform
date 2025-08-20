@@ -24,14 +24,6 @@ jobs:
         with:
           terraform_version: 1.9.8 
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Checkov
         run: pip install checkov
 
@@ -45,7 +37,7 @@ jobs:
         run: terraform validate
 
       - name: Checkov scan
-        run: checkov -d . --quiet --output cli,json > checkov_report.json
+        run: checkov -d . --quiet --output json > checkov_report.json
 
       - name: Upload Checkov report
         uses: actions/upload-artifact@v4
