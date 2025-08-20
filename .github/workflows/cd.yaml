@@ -33,7 +33,7 @@ jobs:
   apply:
     name: Apply terraform
     runs-on: ubuntu-latest
-    needs: init_and_plan
+    needs: plan
     environment: Prod
 
     steps:
