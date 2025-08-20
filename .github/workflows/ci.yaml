@@ -37,7 +37,7 @@ jobs:
         run: terraform validate
 
       - name: Checkov scan
-        run: checkov -d . --quiet --output json > checkov_report.json
+        run: checkov -d . --quiet --output cli > checkov_report.txt
 
       - name: Upload Checkov report
         uses: actions/upload-artifact@v4
