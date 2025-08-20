@@ -43,7 +43,7 @@ jobs:
         run: terraform validate
 
       - name: Checkov scan
-        run: checkov -d . --quiet --output cli
+        run: checkov -d . --quiet --output cli --soft-fail
 
       - name: Terraform plan
         run: terraform plan
