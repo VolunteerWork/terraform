@@ -49,26 +49,6 @@ module "security-groups" {
 }
 
 ##########################################
-# SSM Parameters Module
-##########################################
-module "ssm-parameters" {
-  source = "./modules/ssm-parameters"
-
-  project_name = var.project_name
-  env          = var.env
-
-  docdb_username        = var.docdb_username
-  docdb_password        = var.docdb_password
-  jwt_secret_key        = var.jwt_secret_key
-  cloudinary_url        = var.cloudinary_url
-  cloudinary_api_key    = var.cloudinary_api_key
-  cloudinary_api_secret = var.cloudinary_api_secret
-  cloudinary_name       = var.cloudinary_name
-  email_user            = var.email_user
-  email_pass            = var.email_pass
-}
-
-##########################################
 # IAM Module
 ##########################################
 module "iam" {
@@ -77,23 +57,24 @@ module "iam" {
   project_name = var.project_name
   env          = var.env
 
-  kms_myapp_secrets_arn = module.ssm-parameters.kms_myapp_secrets_arn
+  kms_myapp_secrets_arn = var.kms_arn
 
   tags = var.tags
 }
 
-module "database" {
-  source = "./modules/database"
+##########################################
+# Database Module
+##########################################
+# module "database" {
+#   source = "./modules/database"
 
-  project_name = var.project_name
-  env          = var.env
+#   project_name = var.project_name
+#   env          = var.env
 
-  docdb_username          = var.docdb_username
-  docdb_password          = var.docdb_password
-  docdb_sg_id             = module.security-groups.docdb_sg_id
-  private_data_subnet_ids = module.network.private_data_subnet_ids
-  tags                    = var.tags
-}
+#   docdb_sg_id             = module.security-groups.docdb_sg_id
+#   private_data_subnet_ids = module.network.private_data_subnet_ids
+#   tags                    = var.tags
+# }
 
 ##########################################
 # Load Balancer Module
@@ -128,18 +109,14 @@ module "ecs" {
   frontend_target_group_arn   = module.loadbalancer.frontend_target_group_arn
   backend_target_group_arn    = module.loadbalancer.backend_target_group_arn
 
-  db_username_arn           = module.ssm-parameters.db_username_arn
-  db_password_arn           = module.ssm-parameters.db_password_arn
-  jwt_secret_key_arn        = module.ssm-parameters.jwt_secret_key_arn
-  cloudinary_url_arn        = module.ssm-parameters.cloudinary_url_arn
-  cloudinary_api_key_arn    = module.ssm-parameters.cloudinary_api_key_arn
-  cloudinary_api_secret_arn = module.ssm-parameters.cloudinary_api_secret_arn
-  cloudinary_name_arn       = module.ssm-parameters.cloudinary_name_arn
-  email_user_arn            = module.ssm-parameters.email_user_arn
-  email_pass_arn            = module.ssm-parameters.email_user_arn
-
-  documentdb_endpoint = ""
-  # documentdb_port = module.database.documentdb_port
+  db_url_arn                = var.db_url_arn
+  jwt_secret_key_arn        = var.jwt_secret_key_arn
+  cloudinary_url_arn        = var.cloudinary_url_arn
+  cloudinary_api_key_arn    = var.cloudinary_api_key_arn
+  cloudinary_api_secret_arn = var.cloudinary_api_secret_arn
+  cloudinary_name_arn       = var.cloudinary_name_arn
+  email_user_arn            = var.email_user_arn
+  email_pass_arn            = var.email_user_arn
 
   tags = var.tags
 }

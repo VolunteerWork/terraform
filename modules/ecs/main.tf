@@ -40,14 +40,17 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
         hostPort      = var.backend_container_config.containerPort
       }]
       environment = [
-        { name = "DB_HOST", value = var.documentdb_endpoint },
-        { name = "DB_PORT", value = tostring(var.documentdb_port) },
-        { name = "DB_NAME", value = "volunteerworkdb" }
+        { name = "DB_IS_DOCUMENTDB", value = "true"}
       ]
       secrets = [
-        { name = "DB_USER", valueFrom = var.db_username_arn },
-        { name = "DB_PASS", valueFrom = var.db_password_arn },
-        { name = "JWT_SECRET_KEY", valueFrom = var.jwt_secret_key_arn }
+        { name = "DB_URL", valueFrom = var.db_url_arn },
+        { name = "JWT_SECRET_KEY", valueFrom = var.jwt_secret_key_arn },
+        { name = "CLOUDINARY_URL", valueFrom = var.cloudinary_url_arn },
+        { name = "CLOUDINARY_API_KEY", valueFrom = var.cloudinary_api_key_arn },
+        { name = "CLOUDINARY_API_SECRET", valueFrom = var.cloudinary_api_secret_arn },
+        { name = "CLOUDINARY_NAME", valueFrom = var.cloudinary_name_arn },
+        { name = "EMAIL_USER", valueFrom = var.email_user_arn },
+        { name = "EMAIL_PASS", valueFrom = var.email_pass_arn },
       ]
       logConfiguration = {
         logDriver = "awslogs",
@@ -91,8 +94,8 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
       portMappings = [{
         containerPort = var.frontend_container_config.containerPort
         hostPort      = var.frontend_container_config.containerPort
-      }],
-      environment : [
+      }]
+      environment = [
         { name = "NEXT_PUBLIC_API_BASE_URL", value = "/api" },
         { name = "HOSTNAME", value = "0.0.0.0" }
       ]

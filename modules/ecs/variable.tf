@@ -30,24 +30,8 @@ variable "private_app_subnet_ids" {
   type        = list(string)
 }
 
-variable "documentdb_endpoint" {
-  description = "DocumentDB cluster endpoint"
-  type        = string
-}
-
-variable "documentdb_port" {
-  description = "DocumentDB port"
-  type        = number
-  default     = 27017
-}
-
-variable "db_username_arn" {
+variable "db_url_arn" {
   description = "The ARN of the SSM Parameter DB username"
-  type        = string
-}
-
-variable "db_password_arn" {
-  description = "The ARN of the SSM Parameter DB password"
   type        = string
 }
 

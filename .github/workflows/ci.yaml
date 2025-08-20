@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: checkov-report
-          path: checkov_report.json
+          path: checkov_report.txt
 
       - name: Terraform plan
         run: terraform plan
