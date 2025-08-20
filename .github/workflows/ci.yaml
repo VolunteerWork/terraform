@@ -43,13 +43,7 @@ jobs:
         run: terraform validate
 
       - name: Checkov scan
-        run: checkov -d . --quiet --output cli --soft-fail > checkov_report.txt
-
-      - name: Upload Checkov report
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkov-report
-          path: checkov_report.txt
+        run: checkov -d . --quiet --output cli
 
       - name: Terraform plan
         run: terraform plan

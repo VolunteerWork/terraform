@@ -23,7 +23,7 @@ jobs:
         run: terraform validate
       
       - name: Terraform plan
-        run: terraform plan -var-file=terraform.tfvars -out=tfplan -no-color
+        run: terraform plan -var-file=terraform.tfvars -out=tfplan
       
       - name: Upload plan
         uses: actions/upload-artifact@v4
@@ -34,7 +34,7 @@ jobs:
   deploy:
     name: Plan terraform
     runs-on: ubuntu-latest
-    environment: approval
+    environment: Prod
 
     steps:
       - name: Setup Terraform
@@ -49,5 +49,5 @@ jobs:
           path: .
       
       - name: Terraform plan
-        run: terraform apply -auto-approve tfplan -no-color
+        run: terraform apply -auto-approve tfplan
         
