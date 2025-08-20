@@ -21,10 +21,10 @@ resource "aws_lb" "main" {
 # Target Groups
 ######################################
 resource "aws_lb_target_group" "backend_tg" {
-  name     = "${var.project_name}-${var.env}-backend-tg"
-  port     = var.backend_port
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "${var.project_name}-${var.env}-backend-tg"
+  port        = var.backend_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   health_check {
@@ -46,10 +46,10 @@ resource "aws_lb_target_group" "backend_tg" {
 }
 
 resource "aws_lb_target_group" "frontend_tg" {
-  name     = "${var.project_name}-${var.env}-frontend-tg"
-  port     = var.frontend_port
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "${var.project_name}-${var.env}-frontend-tg"
+  port        = var.frontend_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   health_check {

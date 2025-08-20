@@ -1,6 +1,6 @@
 # Environment
 variable "env" {
-  type = string
+  type    = string
   default = "dev"
 }
 
@@ -44,7 +44,7 @@ variable "region" {
 
 # Availability Zones
 variable "availability_zones" {
-  type    = list(string)
+  type = list(string)
 }
 
 # Tags

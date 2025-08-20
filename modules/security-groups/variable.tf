@@ -16,7 +16,7 @@ variable "project_name" {
 variable "db_public_access" {
   description = "Allow public access to db for testing purposes"
   type        = bool
-  default = false
+  default     = false
 }
 
 variable "tags" {

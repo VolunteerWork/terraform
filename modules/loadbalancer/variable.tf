@@ -1,5 +1,5 @@
 variable "env" {
-  type = string
+  type    = string
   default = "dev"
 }
 
@@ -10,30 +10,30 @@ variable "project_name" {
 
 variable "vpc_id" {
   description = "VPC ID"
-  type = string
+  type        = string
 }
 
 
 variable "lb_sg_id" {
   description = "Id of security group of load balancer"
-  type = string
+  type        = string
 }
 
 variable "public_subnet_ids" {
   description = "List of public subnet IDs"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "backend_port" {
   description = "Port of backend app"
-  type = number
-  default = 8080
+  type        = number
+  default     = 8080
 }
 
 variable "frontend_port" {
   description = "Port of frontend app"
-  type = number
-  default = 3000
+  type        = number
+  default     = 3000
 }
 
 variable "frontend_healthcheck" {
