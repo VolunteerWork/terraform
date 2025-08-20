@@ -59,7 +59,14 @@ resource "aws_iam_role_policy" "ecs_task_ssm_policy" {
           "kms:Decrypt"
         ],
         Resource = var.kms_myapp_secrets_arn
-      }
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup"
+        ],
+        Resource = "*"
+      },
     ]
   })
 }
